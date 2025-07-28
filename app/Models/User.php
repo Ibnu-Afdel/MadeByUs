@@ -61,4 +61,14 @@ class User extends Authenticatable implements HasMedia
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function projects()
+    {
+        $this->hasMany(Project::class);
+    }
+
+    public function comments()
+    {
+        $this->hasMany(Comment::class);
+    }
 }
