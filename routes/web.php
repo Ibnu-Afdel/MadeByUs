@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Projects\Manage;
 use App\Livewire\Projects\ShowProjects;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -10,7 +11,7 @@ Route::get('/', function () {
     return view('Home');
 })->name('home');
 
-Route::get('/projects', ShowProjects::class)->name('projects.show');
+Route::get('/projects', Manage::class)->name('projects.manage');
 
 
 Route::view('dashboard', 'dashboard')
