@@ -1,15 +1,13 @@
 <?php
 
 use App\Livewire\Projects\Manage;
-use App\Livewire\Projects\ShowProjects;
+use App\Livewire\Public\Index;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('Home');
-})->name('home');
+Route::get('/', Index::class)->name('home');
 
 Route::get('/projects', Manage::class)->name('projects.manage');
 
