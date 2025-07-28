@@ -62,9 +62,5 @@
 
 
 <x-layouts.guest :title="__('Dashboard')">
-       
-
-                
-                <h1 class="text-white">home</h1>
-
+     <h1 class="text-white">home</h1>
 </x-layouts.guest>
