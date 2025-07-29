@@ -64,11 +64,11 @@ class User extends Authenticatable implements HasMedia
 
     public function projects()
     {
-        $this->hasMany(Project::class);
+        return $this->hasMany(Project::class);
     }
 
     public function comments()
     {
-        $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class);
     }
 }

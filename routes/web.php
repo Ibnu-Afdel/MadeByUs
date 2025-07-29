@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Index::class)->name('home');
 
-Route::get('/projects', Manage::class)->name('projects.manage');
+Route::get('/projects', Manage::class)->middleware('auth')->name('projects.manage');
 
 
 Route::view('dashboard', 'dashboard')
