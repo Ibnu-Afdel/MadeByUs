@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Projects\Manage;
+use App\Livewire\Projects\Show;
 use App\Livewire\Public\Index;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', Index::class)->name('home');
 
 Route::get('/projects', Manage::class)->middleware('auth')->name('projects.manage');
+Route::get('/projects/{project}', Show::class)->middleware('auth')->name('projects.show');
 
 
 Route::view('dashboard', 'dashboard')

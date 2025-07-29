@@ -4,6 +4,8 @@ namespace App\Livewire\Projects;
 
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -21,7 +23,8 @@ class Manage extends Component
     public string $description = '';
 
     #[Rule('nullable|image|max:1024')]
-    public $image ;
+    public $image;
+    public ?int $confirmingDeleteId = null;
 
 
     public function save()
@@ -32,9 +35,9 @@ class Manage extends Component
 
         $validated = $this->validate();
 
-        if ($this->editingProject){
+        if ($this->editingProject) {
             $this->editingProject->update($validated);
-        }else {
+        } else {
             Auth::user()->projects()->create($validated);
         }
         $this->closeModal();
@@ -52,12 +55,33 @@ class Manage extends Component
         $this->title = $project->title;
         $this->description = $project->description;
 
-        $this->showFormModal= true;
+        $this->showFormModal = true;
     }
 
     public function closeModal()
     {
         $this->reset();
+    }
+
+    #[On('open-edit-modal')]
+    public function triggerOpenEditModal(Project $project)
+    {
+        if ($project) {
+            $this->openEditModal($project);
+        }
+    }
+
+    public function destroy(Project $project)
+    {
+        $project->where('id', $this->confirmingDeleteId)
+            ->where('user_id', FacadesAuth::user()->id)
+            ->delete();
+            $this->confirmingDeleteId = null;
+    }
+
+    public function confirmDelete(Project $project)
+    {
+        $this->confirmingDeleteId = $project->id;
     }
 
     public function render()

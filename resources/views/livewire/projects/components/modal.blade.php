@@ -28,7 +28,7 @@
                         </x-projects.button>
 
                         <x-projects.button 
-                        wire:click='closeModal'
+                        type="submit"
                         class="border border-green-400 bg-green-500 text-white hover:bg-green-600"
                          >Save
                         </x-projects.button>
