@@ -3,8 +3,10 @@
 namespace App\Livewire\Projects;
 
 use App\Models\Project;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
+#[Layout('components.layouts.guest')]
 class Show extends Component
 {
     public Project $project;

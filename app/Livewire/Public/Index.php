@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use App\Models\Project;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
@@ -11,6 +12,7 @@ class Index extends Component
 {
     public function render()
     {
-        return view('livewire.public.index');
+        $projects = Project::where('status', 'accepted')->latest()->get();
+        return view('livewire.public.index', compact('projects'));
     }
 }
