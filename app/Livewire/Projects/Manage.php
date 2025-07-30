@@ -25,6 +25,7 @@ class Manage extends Component
     #[Rule('nullable|image|max:1024')]
     public $image;
     public ?int $confirmingDeleteId = null;
+    public string|null $existingImageUrl = null;
 
 
     public function save()
@@ -37,7 +38,14 @@ class Manage extends Component
         $projectData = collect($validated)->except('image')->toArray();
 
         if ($this->editingProject) {
-            $this->editingProject->update($validated);
+            $this->editingProject->update($projectData);
+            if($this->image){
+                $this->editingProject
+                ->clearMediaCollection('images')
+                ->addMedia($this->image->getRealPath())
+                ->usingFileName($this->image->getClientOriginalName())
+                ->toMediaCollection('images');
+            }
         } else {
          $post = Auth::user()->projects()->create($projectData);
          if ($this->image) {
@@ -60,6 +68,7 @@ class Manage extends Component
         $this->editingProject = $project;
         $this->title = $project->title;
         $this->description = $project->description;
+        $this->existingImageUrl = $project->getFirstMediaUrl('images');
 
         $this->showFormModal = true;
     }
