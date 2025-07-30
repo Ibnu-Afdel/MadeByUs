@@ -13,9 +13,9 @@
     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         @foreach ($projects as $project)
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
-                @if($project->image)
+                @if($project->getFirstMediaUrl('images'))
                     <div class="h-48 bg-gradient-to-br from-green-400 to-green-600 relative overflow-hidden">
-                        <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
+                        <img src='{{ $project->getFirstMediaUrl('images') }}' alt="{{ $project->title }}"
                              class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
@@ -34,9 +34,7 @@
                         <h3 class="text-xl font-semibold text-gray-900 dark:text-white line-clamp-2">
                             {{ $project->title }}
                         </h3>
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 ml-2 flex-shrink-0">
-                            {{ $project->status }}
-                        </span>
+                       
                     </div>
 
                     <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 line-clamp-3">

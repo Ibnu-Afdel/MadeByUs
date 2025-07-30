@@ -2,9 +2,9 @@
   @foreach ($projects as $project)
     <div
     class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-700">
-    @if($project->image)
+    @if($project->getFirstMediaUrl('images'))
     <div class="h-48 bg-gradient-to-br from-green-400 to-green-600 relative overflow-hidden">
-      <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}"
+      <img src="{{ $project->getFirstMediaUrl('images') }}" alt="{{ $project->title }}"
       class="w-full h-full object-cover">
       <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
     </div>

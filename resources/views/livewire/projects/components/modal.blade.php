@@ -19,6 +19,19 @@
                     placeholder="Description"
                     />
 
+                    <x-projects.input 
+                    type='file'
+                    wire:model='image'
+                    name='title'
+                    placeholder='Title'
+                     />
+                     @if ($image)
+                         <div>
+                            Preview: <img src="{{ $image->temporaryUrl() }}" alt="">
+                         </div>
+                     @endif
+                   
+
                     <div class="flex justify-end gap-2">
 
                         <x-projects.button 

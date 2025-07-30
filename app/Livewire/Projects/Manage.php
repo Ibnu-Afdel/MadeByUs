@@ -38,7 +38,12 @@ class Manage extends Component
         if ($this->editingProject) {
             $this->editingProject->update($validated);
         } else {
-            Auth::user()->projects()->create($validated);
+         $post = Auth::user()->projects()->create($validated);
+         if ($this->image) {
+            $post->addMedia($this->image->getRealPath())
+            ->usingFileName($this->image->getClientOriginalName())
+            ->toMediaCollection('images');
+         }
         }
         $this->closeModal();
     }

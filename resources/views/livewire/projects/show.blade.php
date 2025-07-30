@@ -3,8 +3,8 @@
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-100 dark:border-gray-700">
 
         <div class="h-64 bg-gradient-to-br from-green-500 to-green-700 relative overflow-hidden">
-            @if($project->image)
-                <img src="{{ asset('storage/' . $project->image) }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
+            @if($project->getFirstMediaUrl('images'))
+                <img src="{{ $project->getFirstMediaUrl('images') }}" alt="{{ $project->title }}" class="w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
             @else
                 <div class="h-full w-full flex items-center justify-center">
