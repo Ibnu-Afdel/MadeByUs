@@ -4,7 +4,6 @@ namespace App\Livewire\Projects;
 
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
@@ -96,11 +95,14 @@ class Manage extends Component
         }
     }
 
-    public function destroy(Project $project)
+   public function destroy()
     {
-        $project->where('id', $this->confirmingDeleteId)
-            ->where('user_id', FacadesAuth::user()->id)
-            ->delete();
+        $project = Project::where('id', $this->confirmingDeleteId)
+            ->where('user_id', Auth::id())
+            ->first();
+            if ($project){
+                $project->delete();
+            }
             $this->confirmingDeleteId = null;
     }
 
