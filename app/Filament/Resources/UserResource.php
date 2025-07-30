@@ -8,6 +8,7 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\Page;
 use Filament\Resources\Resource;
@@ -30,19 +31,27 @@ class UserResource extends Resource
         return $form
             ->schema([
                 Fieldset::make('Create User')
-                ->schema([
-                    Forms\Components\TextInput::make('name')
-                    ->required(),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->required(fn (Page $livewire) => ($livewire instanceof CreateUser)),
-                ])
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required(),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required(),
+                        Forms\Components\DateTimePicker::make('email_verified_at'),
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->dehydrateStateUsing(fn($state) => Hash::make($state))
+                            ->dehydrated(fn($state) => filled($state))
+                            ->required(fn(Page $livewire) => ($livewire instanceof CreateUser)),
+                        // Select::make(name: 'permissions')
+                        //     ->multiple()
+                        //     ->relationship(titleAttribute: 'name')
+                        //     ->preload(),
+                        Select::make(name: 'roles')
+                            ->multiple()
+                            ->relationship(titleAttribute: 'name')
+                            ->preload()
+                    ])
             ]);
     }
 
@@ -55,14 +64,14 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-M-Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -71,6 +80,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

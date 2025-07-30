@@ -6,6 +6,7 @@ use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -29,9 +30,13 @@ class RoleResource extends Resource
         return $form
             ->schema([
                 Fieldset::make('Create Role')
-                ->schema([
-                    TextInput::make('name')
-                ])
+                    ->schema([
+                        TextInput::make('name')->unique(ignoreRecord: true),
+                        Select::make(name: 'permissions')
+                            ->multiple()
+                            ->relationship(titleAttribute: 'name')
+                            ->preload()
+                    ])
             ]);
     }
 
@@ -39,13 +44,16 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('id')->sortable(),
+                TextColumn::make('name'),
+                TextColumn::make('created_at')->dateTime('d-M-Y')->sortable()
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -68,5 +76,24 @@ class RoleResource extends Resource
             'create' => Pages\CreateRole::route('/create'),
             'edit' => Pages\EditRole::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('name', '!=', 'Admin');
+
+        // if i want to show admin role to all except moderators i can use the below code
+
+        //      public static function getEloquentQuery(): Builder
+        // {
+        //     $query = parent::getEloquentQuery();
+
+        //     if (auth()->user()->hasRole('moderator')) {
+        //         $query->where('name', '!=', 'Admin');
+        //     }
+
+        //     return $query;
+        // }
+
     }
 }

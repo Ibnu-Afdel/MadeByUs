@@ -27,10 +27,10 @@ class PermissionResource extends Resource
     {
         return $form
             ->schema([
-              Fieldset::make('Create Permissions')
-              ->schema([
-                  TextInput::make('name')
-              ])
+                Fieldset::make('Create Permissions')
+                    ->schema([
+                        TextInput::make('name')
+                    ])
             ]);
     }
 
@@ -38,13 +38,16 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('id')->sortable(),
+                TextColumn::make('name'),
+                TextColumn::make('created_at')->dateTime('d-M-Y')->sortable()
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
