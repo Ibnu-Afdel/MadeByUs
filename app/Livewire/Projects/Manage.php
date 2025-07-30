@@ -34,11 +34,12 @@ class Manage extends Component
         }
 
         $validated = $this->validate();
+        $projectData = collect($validated)->except('image')->toArray();
 
         if ($this->editingProject) {
             $this->editingProject->update($validated);
         } else {
-         $post = Auth::user()->projects()->create($validated);
+         $post = Auth::user()->projects()->create($projectData);
          if ($this->image) {
             $post->addMedia($this->image->getRealPath())
             ->usingFileName($this->image->getClientOriginalName())
