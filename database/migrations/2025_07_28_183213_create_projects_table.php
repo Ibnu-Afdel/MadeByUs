@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('description');
-            $table->string('image')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
         });
