@@ -38,23 +38,33 @@ class Manage extends Component
         $projectData = collect($validated)->except('image')->toArray();
 
         if ($this->editingProject) {
-            $this->editingProject->update($projectData);
-            if($this->image){
-                $this->editingProject
-                ->clearMediaCollection('images')
-                ->addMedia($this->image->getRealPath())
-                ->usingFileName($this->image->getClientOriginalName())
-                ->toMediaCollection('images');
-            }
+           $this->updateProject($projectData);
         } else {
-         $post = Auth::user()->projects()->create($projectData);
-         if ($this->image) {
+            $this->createProject($projectData);
+        }
+        $this->closeModal();
+    }
+    public function createProject($projectData)
+    {
+        $post = Auth::user()->projects()->create($projectData);
+
+        if ($this->image){
             $post->addMedia($this->image->getRealPath())
             ->usingFileName($this->image->getClientOriginalName())
             ->toMediaCollection('images');
-         }
         }
-        $this->closeModal();
+    }
+
+    public function updateProject($projectData)
+    {
+        $this->editingProject->update($projectData);
+        if ($this->image){
+            $this->editingProject
+            ->clearMediaCollection('images')
+            ->addMedia($this->image->getRealPath())
+            ->usingFileName($this->image->getClientOriginalName())
+            ->toMediaCollection('images');
+        }
     }
 
     public function openCreateModal()
