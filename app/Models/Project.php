@@ -7,21 +7,24 @@ use App\Traits\HasSlug;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\Tags\HasTags;
 
 class Project extends Model implements HasMedia
 {
     use InteractsWithMedia;
     use HasSlug;
+    use HasTags;
     protected $guarded = [];
 
     protected $casts = [
         'status' => ProjectStatus::class,
     ];
 
-    protected static function booted()
-    {
-       static::bootHasSlug();
-    }
+    // protected static function booted()
+    // {
+    //    static::bootHasSlug();
+    // }
+
     public function getRouteKeyName()
     {
         return 'slug';
