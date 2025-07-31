@@ -24,14 +24,30 @@ class Project extends Model implements HasMedia
     protected static function booted()
     {
         static::creating(function (Project $project) {
-            $project->slug = Str::slug($project->title);
+            // $project->slug = Str::slug($project->title);
+            $project->slug = static::generateUniqueSlug($project->title);
         });
 
         static::updating(function (Project $project) {
             if ($project->isDirty('title')) {
-                $project->slug = Str::slug($project->title);
+                // $project->slug = Str::slug($project->title);
+                $project->slug = static::generateUniqueSlug($project->title, $project->id);
             }
         });
+    }
+
+    protected static function generateUniqueSlug($title, $ignoredId = null)
+    {
+        $slug = Str::slug($title);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while(static::where('slug', $slug)
+            ->when($ignoredId, fn($query) => $query->where('id', '!=', $ignoredId))
+        ->exists()){
+            $slug = $originalSlug . '-' . $count++;
+        }
+        return $slug;
     }
 
     public function user()
