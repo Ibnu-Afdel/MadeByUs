@@ -33,6 +33,16 @@
       {{ $project->description }}
       </p>
 
+      <div class="mb-4 flex flex-wrap gap-2">
+      @foreach ($project->tags as $tag)
+      <span
+      class="inline-block bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 text-xs font-semibold px-2 py-0.5 rounded-full">
+       <a href="{{ route('projects.show', $project) }}">{{ $tag->name }}</a>
+      </span>
+    @endforeach
+      </div>
+
+
       <div class="flex items-center justify-between">
       <div class="flex items-center text-sm text-gray-500 dark:text-gray-400">
         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

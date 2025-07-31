@@ -10,15 +10,16 @@
                 {{-- <x-projects.textarea wire:model="description" name="description" placeholder="Description" /> --}}
                 <flux:textarea wire:model="description" label="Description" placeholder="Description" name="description" />
 
-                 {{-- <x-projects.input type='file' wire:model='image' name='title' placeholder='Title' /> --}}
+                {{-- <x-projects.input type='file' wire:model='image' name='title' placeholder='Title' /> --}}
                 <div>
                     <flux:input type="file" wire:model="image" label="Image" />
 
                     <div wire:loading wire:target="image" class="text-sm text-blue-500 mt-2 flex items-center gap-2">
-                        <svg class="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor"
-                                  d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                        <svg class="animate-spin h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                            </circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
                         </svg>
                         Uploading image...
                     </div>
@@ -26,17 +27,22 @@
                     @if ($image)
                         <div class="mt-3">
                             <span class="text-sm text-gray-600">Preview:</span>
-                            <img src="{{ $image->temporaryUrl() }}"
-                                 class="w-32 h-32 object-cover rounded-lg border mt-1" alt="Preview">
+                            <img src="{{ $image->temporaryUrl() }}" class="w-32 h-32 object-cover rounded-lg border mt-1"
+                                alt="Preview">
                         </div>
                     @elseif($existingImageUrl)
                         <div class="mt-3">
                             <span class="text-sm text-gray-600">Current Image:</span>
-                            <img src="{{ $existingImageUrl }}"
-                                 class="w-32 h-32 object-cover rounded-lg border mt-1" alt="Current">
+                            <img src="{{ $existingImageUrl }}" class="w-32 h-32 object-cover rounded-lg border mt-1"
+                                alt="Current">
                         </div>
                     @endif
                 </div>
+
+                <div>
+                    <flux:input type="text" wire:model="tags" label="Tags" placeholder='tag1, tag2' />
+                </div>
+
 
                 <div class="flex justify-end gap-2 pt-2">
                     <x-projects.button wire:click='closeModal'
