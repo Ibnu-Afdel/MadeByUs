@@ -173,6 +173,7 @@
                     </div>
                 </div>
             @endif
+            <livewire:comments.comment-manage :project="$project" />
         </div>
     </div>
 </div>
