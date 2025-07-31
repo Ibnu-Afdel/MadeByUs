@@ -20,7 +20,7 @@ class Show extends Component
 
     public function triggerEdit()
     {
-        $this->dispatch('open-edit-modal', $this->project);
+        $this->dispatch('open-edit-modal', $this->project->id);
     }
 
     public function render()

@@ -72,8 +72,9 @@ class Manage extends Component
         $this->showFormModal = true;
     }
 
-    public function openEditModal(Project $project)
+    public function openEditModal($projectId)
     {
+        $project = Project::findOrFail($projectId);
         $this->editingProject = $project;
         $this->title = $project->title;
         $this->description = $project->description;
@@ -88,10 +89,10 @@ class Manage extends Component
     }
 
     #[On('open-edit-modal')]
-    public function triggerOpenEditModal(Project $project)
+    public function triggerOpenEditModal($projectId)
     {
-        if ($project) {
-            $this->openEditModal($project);
+        if ($projectId) {
+            $this->openEditModal($projectId);
         }
     }
 
@@ -106,9 +107,9 @@ class Manage extends Component
             $this->confirmingDeleteId = null;
     }
 
-    public function confirmDelete(Project $project)
+    public function confirmDelete($projectId)
     {
-        $this->confirmingDeleteId = $project->id;
+        $this->confirmingDeleteId = $projectId;
     }
 
     public function render()

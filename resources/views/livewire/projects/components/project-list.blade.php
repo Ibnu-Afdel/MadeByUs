@@ -55,7 +55,7 @@
         View
         </a>
 
-        <button wire:click="openEditModal({{ $project }})"
+        <button wire:click="openEditModal({{ $project->id }})"
         class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors duration-200 hover:cursor-pointer">
         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
