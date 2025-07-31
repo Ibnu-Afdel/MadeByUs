@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\RoleResource\Pages;
 use App\Filament\Resources\RoleResource\RelationManagers;
+use App\Models\Role as ModelsRole;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Select;
@@ -15,11 +16,10 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\Permission\Models\Role;
 
 class RoleResource extends Resource
 {
-    protected static ?string $model = Role::class;
+    protected static ?string $model = ModelsRole::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-finger-print';
     protected static ?int $navigationSort = 2;
