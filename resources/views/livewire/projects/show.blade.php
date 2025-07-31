@@ -19,7 +19,7 @@
                     <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                         <circle cx="10" cy="10" r="3"></circle>
                     </svg>
-                    {{ ucfirst($project->status) }}
+                    {{ ucfirst($project->status->value) }}
                 </span>
             </div>
         </div>
@@ -52,7 +52,7 @@
                         </svg>
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">Status</p>
-                            <p class="font-medium text-gray-900 dark:text-white">{{ ucfirst($project->status) }}</p>
+                            <p class="font-medium text-gray-900 dark:text-white">{{ ucfirst($project->status->value) }}</p>
                         </div>
                     </div>
                     <div class="flex items-center">
