@@ -15,7 +15,32 @@ class PremiumPayment extends Model
         'status' => PremiumPaymentStatus::class,
     ];
 
+    public function markAsSuccessAndUpgrade()
+    {
+        $this->update([
+            'status' => PremiumPaymentStatus::SUCCESS,
+            'paid_at' => now()
+        ]);
 
+        if ($this->user && !$this->user->hasRole('Premium')) {
+            $this->user->assignRole('Premium');
+        }
+    }
+
+    public function hasSuccess()
+    {
+        return $this->status === PremiumPaymentStatus::SUCCESS;
+    }
+
+    public function isPending()
+    {
+        return $this->status === PremiumPaymentStatus::PENDING;
+    }
+
+    public function markAsFailed()
+    {
+        $this->update(['status' => PremiumPaymentStatus::FAILED]);
+    }
 
     public function user()
     {
