@@ -26,6 +26,9 @@ class User extends Authenticatable  implements FilamentUser
         'name',
         'email',
         'password',
+        'provider',
+        'provider_id',
+        'avatar',
     ];
 
     /**
@@ -51,9 +54,9 @@ class User extends Authenticatable  implements FilamentUser
         ];
     }
 
-     public function canAccessPanel(Panel $panel): bool
+    public function canAccessPanel(Panel $panel): bool
     {
-        return $this->hasRole(['Admin', 'Moderator' ]);
+        return $this->hasRole(['Admin', 'Moderator']);
     }
 
     /**
@@ -64,7 +67,7 @@ class User extends Authenticatable  implements FilamentUser
         return Str::of($this->name)
             ->explode(' ')
             ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->map(fn($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
 

@@ -10,26 +10,33 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
-    public function redirectToGoogle()
+    public function redirectToProvider($provider)
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver($provider)->redirect();
     }
 
-    public function handelGoogleCallback()
+    public function handelProviderCallback($provider)
     {
-        $googleUser = Socialite::driver('google')->user();
+        $socialUser = Socialite::driver($provider)->user();
 
-        $user = User::updateOrCreate([
-            'provider' => 'google', 
-            'provider_id' => $googleUser->getId()
-        ],[
-            'name' => $googleUser->getName(),
-            'email' => $googleUser->getEmail(),
-            'avatar' => $googleUser->getAvatar(),
-        ]);
+        $user = User::where('email', $socialUser->getEmail())->first();
 
+        if ($user) {
+            $user->update([
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $socialUser->getAvatar(),
+            ]);
+        } else {
+            $user = User::create([
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'provider' => $provider,
+                'provider_id' => $socialUser->getId(),
+                'avatar' => $socialUser->getAvatar(),
+            ]);
+        }
         Auth::login($user);
         return to_route('dashboard');
     }
-
 }
