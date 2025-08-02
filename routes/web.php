@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\PremiumController;
 use App\Livewire\Projects\Manage;
 use App\Livewire\Projects\Show;
@@ -34,6 +35,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/premium/callback', [PremiumController::class, 'handleCallback'])->name('premium.callback');
     Route::get('/premium/thank-you', [PremiumController::class, 'thankYou'])->name('premium.thank-you');
 });
+
+Route::get('/auth/redirect', [SocialAuthController::class, 'redirectToGoogle']);
+
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handelGoogleCallback']);
+
 
 
 require __DIR__ . '/auth.php';
