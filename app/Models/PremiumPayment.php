@@ -25,6 +25,8 @@ class PremiumPayment extends Model
         if ($this->user && !$this->user->hasRole('Premium')) {
             $this->user->assignRole('Premium');
         }
+
+        return true;
     }
 
     public function hasSuccess()

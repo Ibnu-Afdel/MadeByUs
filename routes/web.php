@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PremiumController;
 use App\Livewire\Projects\Manage;
 use App\Livewire\Projects\Show;
 use App\Livewire\Public\Index;
@@ -25,6 +26,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/profile', Profile::class)->name('settings.profile');
     Route::get('settings/password', Password::class)->name('settings.password');
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/premium/upgrade', [PremiumController::class, 'showUpgrade'])->name('premium.upgrade');
+    Route::post('/premium/initiate', [PremiumController::class, 'initiatePremium'])->name('premium.initiate');
+    Route::get('/premium/callback', [PremiumController::class, 'handleCallback'])->name('premium.callback');
+    Route::get('/premium/thank-you', [PremiumController::class, 'thankYou'])->name('premium.thank-you');
 });
 
 

@@ -34,16 +34,16 @@ class ChapaService
 
     public function initializePayment($data)
     {
-        $txRef = Str::uuid()->toString();
+        // $txRef = Str::uuid()->toString(); -> will pass from controller ..
 
         $payload  = array_merge($data, [
-            'tx_ref' => $txRef,
+            // 'tx_ref' => $txRef,
             'currency' => 'ETB',
-            'callback_uri' => config('chapa.callback_url'),
-            'return_url' => config('app.url') . '/pro/thank-you',
+            // 'callback_url' => config('chapa.callback_url'),
+            // 'return_url' => config('app.url') . '/pro/thank-you',
         ]);
         try {
-            $response = $this->client->post('/transaction/initialize', [
+            $response = $this->client->post('/v1/transaction/initialize', [
                 'json' => $payload
             ]);
             $result = json_decode($response->getBody()->getContents(), true);
@@ -60,7 +60,7 @@ class ChapaService
     public function verifyTransaction($txRef)
     {
         try{
-            $response = $this->client->get("transaction/verify/{$txRef}");
+            $response = $this->client->get("/v1/transaction/verify/{$txRef}");
             $body = json_decode($response->getBody(), true);
             return $body;
         } catch(\Exception $e){
