@@ -36,9 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/premium/thank-you', [PremiumController::class, 'thankYou'])->name('premium.thank-you');
 });
 
-Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirectToProvider']);
+Route::get('/auth/{provider}/redirect', [SocialAuthController::class, 'redirectToProvider'])->name('social.redirect');
 
-Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'handelProviderCallback']);
+Route::get('/auth/{provider}/callback', [SocialAuthController::class, 'handelProviderCallback'])->name('social.callback');
 
 
 
