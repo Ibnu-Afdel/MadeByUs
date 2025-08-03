@@ -14,7 +14,11 @@ class Show extends Component
     public function mount(Project $project)
     {
         $this->project = $project;
-        $this->project->increment('view_count');
+        $viewKey = 'viewed_project_' . $project->id;
+        if (!session()->has($viewKey)) {
+            $this->project->increment('view_count');
+            session()->put($viewKey, true);
+        }
     }
 
     public function triggerEdit()
