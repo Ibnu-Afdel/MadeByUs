@@ -7,19 +7,19 @@ use Spatie\Tags\Tag;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Livewire\WithPagination;
 
 #[Layout('components.layouts.guest')]
 
 class Index extends Component
 {
-    use WithPagination;
-    
     #[Url(as: 'search')]
     public string $search = '';
     
     #[Url(as: 'tag')]
     public ?string $selectedTag = null;
+    
+    public int $perPage = 6;
+    public bool $hasMorePages = true;
     
     public function filterByTag(?string $tagName)
     {
@@ -31,14 +31,30 @@ class Index extends Component
         } else {
             $this->selectedTag = null;
         }
-        $this->resetPage(); // Reset pagination when filtering
+        $this->resetProjects();
     }
     
     public function clearFilters()
     {
         $this->selectedTag = null;
         $this->search = '';
-        $this->resetPage();
+        $this->resetProjects();
+    }
+    
+    public function loadMore()
+    {
+        $this->perPage += 6;
+    }
+    
+    private function resetProjects()
+    {
+        $this->perPage = 6;
+        $this->hasMorePages = true;
+    }
+    
+    public function updatedSearch()
+    {
+        $this->resetProjects();
     }
     
     public function render()
@@ -107,7 +123,7 @@ class Index extends Component
             ->take(6)
             ->get();
 
-        $projects = Project::where('status', 'approved')
+        $projectsQuery = Project::where('status', 'approved')
             ->where('is_featured', false)
             ->where('is_priority', false)
             ->when($this->search, function($query) {
@@ -124,8 +140,13 @@ class Index extends Component
                     $tagQuery->where('name->en', 'like', "%{$this->selectedTag}%");
                 });
             })
-            ->latest()
-            ->paginate(6);
+            ->latest();
+
+        $projects = $projectsQuery->take($this->perPage)->get();
+        
+        // Check if there are more projects to load
+        $totalProjects = $projectsQuery->count();
+        $this->hasMorePages = $totalProjects > $this->perPage;
 
         // Popular Tags (only tags used by approved projects)
         $popularTags = Tag::selectRaw('tags.*, COUNT(DISTINCT projects.id) as taggables_count')
