@@ -133,6 +133,16 @@ class ProjectResource extends Resource
             ]);
     }
 
+
+    public static function getEloquentQuery(): Builder
+{
+    return parent::getEloquentQuery()
+        ->where('status', ProjectStatus::PENDING)
+        ->orderByDesc('is_priority') 
+        ->orderBy('created_at', 'desc'); 
+}
+
+
     public static function getRelations(): array
     {
         return [
