@@ -8,6 +8,7 @@ use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -43,6 +44,13 @@ class ProjectResource extends Resource
                     ->options(ProjectStatus::class),
                 Forms\Components\Toggle::make('is_featured'),
                 SpatieTagsInput::make('tags'),
+
+                SpatieMediaLibraryFileUpload::make('images')
+                ->collection('images')
+                ->label('Image')
+                ->image()
+                ->disk('public')
+                ->columnSpanFull(),
                 // Forms\Components\TextInput::make('slug')
                 //     ->required(),
                 // Forms\Components\TextInput::make('view_count')
