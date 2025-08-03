@@ -29,7 +29,32 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
+            'avatar' => fake()->boolean(60) ? fake()->imageUrl(200, 200, 'people') : null,
+            'provider' => null,
+            'provider_id' => null,
         ];
+    }
+
+    /**
+     * Indicate that the user is a social login user.
+     */
+    public function socialLogin(string $provider = 'github'): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'provider' => $provider,
+            'provider_id' => fake()->unique()->numerify('########'),
+            'password' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the user has an avatar.
+     */
+    public function withAvatar(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'avatar' => fake()->imageUrl(200, 200, 'people'),
+        ]);
     }
 
     /**

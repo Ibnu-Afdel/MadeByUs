@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProjectStatus;
 use App\Traits\HasSlug;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -11,6 +12,7 @@ use Spatie\Tags\HasTags;
 
 class Project extends Model implements HasMedia
 {
+    use HasFactory;
     use InteractsWithMedia;
     use HasSlug;
     use HasTags;
