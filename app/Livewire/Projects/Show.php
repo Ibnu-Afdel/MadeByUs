@@ -14,8 +14,7 @@ class Show extends Component
     public function mount(Project $project)
     {
         $this->project = $project;
-        // auth wbe here
-        
+        $this->project->increment('view_count');
     }
 
     public function triggerEdit()

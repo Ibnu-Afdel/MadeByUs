@@ -43,7 +43,6 @@
         </div>
     </form>
 
-    <!-- OR Divider -->
     <div class="relative">
         <div class="absolute inset-0 flex items-center">
             <div class="w-full border-t border-gray-300 dark:border-gray-600"></div>
