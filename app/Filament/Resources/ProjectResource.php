@@ -93,14 +93,30 @@ class ProjectResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                    TextColumn::make('submission_type')
+                    ->label('Submission Type')
+                    ->badge()
+                    ->getStateUsing(function (Project $project) {
+                        if ($project->status === ProjectStatus::PENDING) {
+                            return $project->created_at->eq($project->updated_at)
+                                ? 'New'
+                                : 'Edited';
+                        }
+                        return null;
+                    })
+                    ->color(fn($state) => match($state){
+                        'New' => 'success',
+                        'Edited' => 'warning',
+                        default => 'gray',
+                    }),
+                    
             ])
             ->filters([
                 SelectFilter::make('status')
-                ->options(ProjectStatus::class),
+                ->options(ProjectStatus::class)
+                ->default('pending'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-
                 Action::make('approve')
                 ->label('Approve')
                 ->icon('heroicon-o-check-circle')
@@ -124,7 +140,9 @@ class ProjectResource extends Resource
                     ]);
                 })
                 ->visible(fn(Project $project) => $project->status === ProjectStatus::PENDING)
-                ->authorize('approve projects')
+                ->authorize('approve projects'),
+
+                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -137,7 +155,6 @@ class ProjectResource extends Resource
     public static function getEloquentQuery(): Builder
 {
     return parent::getEloquentQuery()
-        ->where('status', ProjectStatus::PENDING)
         ->orderByDesc('is_priority') 
         ->orderBy('created_at', 'desc'); 
 }

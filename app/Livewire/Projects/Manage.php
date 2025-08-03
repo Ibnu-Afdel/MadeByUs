@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Projects;
 
+use App\Enums\ProjectStatus;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
@@ -73,13 +74,14 @@ class Manage extends Component
 
     public function updateProject($projectData)
     {
+        $this->editingProject['status'] = ProjectStatus::PENDING;
         $this->editingProject->update($projectData);
         if ($this->image) {
             $this->editingProject
-                ->clearMediaCollection('images')
-                ->addMedia($this->image->getRealPath())
-                ->usingFileName($this->image->getClientOriginalName())
-                ->toMediaCollection('images');
+            ->clearMediaCollection('images')
+            ->addMedia($this->image->getRealPath())
+            ->usingFileName($this->image->getClientOriginalName())
+            ->toMediaCollection('images');
         }
 
          $tags = collect(explode(',', $this->tags))
