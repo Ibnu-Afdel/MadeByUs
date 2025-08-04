@@ -146,7 +146,7 @@ class Manage extends Component
         ? Auth::user()
         ->projects()
         ->when($this->search, function($query){
-            $query->where('title', 'like', "%{$this->search}%")
+            $query->where('title', 'x', "%{$this->search}%")
             ->orWhereHas('tags', function($query){
                 $query->where('name->en', 'like', "%{$this->search}%");
             });
