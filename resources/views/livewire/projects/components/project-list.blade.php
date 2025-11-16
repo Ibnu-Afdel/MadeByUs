@@ -6,9 +6,9 @@
                     
                     <!-- Image Section -->
                     <div class="relative">
-                        @if($project->getFirstMediaUrl('images'))
+                        @if($project->primary_image_url)
                             <div class="h-48 bg-gradient-to-br from-green-400 to-green-600 relative overflow-hidden">
-                                <img src="{{ $project->getFirstMediaUrl('images') }}" alt="{{ $project->title }}"
+                                <img src="{{ $project->primary_image_url }}" alt="{{ $project->title }}"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                             </div>

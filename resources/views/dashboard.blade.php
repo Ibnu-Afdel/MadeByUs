@@ -133,8 +133,8 @@
                         @foreach($recentProjects as $project)
                             <div class="flex items-center space-x-3 sm:space-x-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors">
                                 <div class="flex-shrink-0">
-                                    @if($project->getFirstMediaUrl('images'))
-                                        <img src="{{ $project->getFirstMediaUrl('images') }}" alt="{{ $project->title }}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover">
+                                    @if($project->primary_image_url)
+                                        <img src="{{ $project->primary_image_url }}" alt="{{ $project->title }}" class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover">
                                     @else
                                         <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-to-br from-gray-400 to-gray-600 flex items-center justify-center">
                                             <svg class="w-5 h-5 sm:w-6 sm:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

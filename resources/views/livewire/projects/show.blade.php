@@ -23,8 +23,8 @@
                     
                     <!-- Hero Image Section -->
                     <div class="relative h-48 sm:h-64 lg:h-80">
-                        @if($project->getFirstMediaUrl('images'))
-                            <img src="{{ $project->getFirstMediaUrl('images') }}" 
+                        @if($project->primary_image_url)
+                            <img src="{{ $project->primary_image_url }}" 
                                  alt="{{ $project->title }}" 
                                  class="w-full h-full object-cover">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>

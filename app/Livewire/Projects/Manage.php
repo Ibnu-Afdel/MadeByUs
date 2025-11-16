@@ -9,12 +9,13 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Spatie\Tags\Tag;
 
 class Manage extends Component
 {
     use WithFileUploads;
+
     public bool $showFormModal = false;
+
     public ?Project $editingProject = null;
 
     #[Rule('required|min:3')]
@@ -25,17 +26,19 @@ class Manage extends Component
 
     #[Rule('nullable|image|max:1024')]
     public $image;
+
     public ?int $confirmingDeleteId = null;
-    public string|null $existingImageUrl = null;
+
+    public ?string $existingImageUrl = null;
+
     #[Rule('required')]
     public string $tags = '';
 
     public string $search = '';
 
-
     public function save()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return;
         }
 
@@ -53,6 +56,7 @@ class Manage extends Component
         }
         $this->closeModal();
     }
+
     public function createProject($projectData)
     {
         $project = Auth::user()->projects()->create($projectData);
@@ -64,8 +68,8 @@ class Manage extends Component
         }
 
         $tags = collect(explode(',', $this->tags))
-            ->map(fn($tag) => trim($tag))
-            ->filter(fn($tag) => !empty($tag))  
+            ->map(fn ($tag) => trim($tag))
+            ->filter(fn ($tag) => ! empty($tag))
             ->unique()
             ->toArray();
 
@@ -78,15 +82,15 @@ class Manage extends Component
         $this->editingProject->update($projectData);
         if ($this->image) {
             $this->editingProject
-            ->clearMediaCollection('images')
-            ->addMedia($this->image->getRealPath())
-            ->usingFileName($this->image->getClientOriginalName())
-            ->toMediaCollection('images');
+                ->clearMediaCollection('images')
+                ->addMedia($this->image->getRealPath())
+                ->usingFileName($this->image->getClientOriginalName())
+                ->toMediaCollection('images');
         }
 
-         $tags = collect(explode(',', $this->tags))
-            ->map(fn($tag) => trim($tag))
-            ->filter(fn($tag) => !empty($tag))  
+        $tags = collect(explode(',', $this->tags))
+            ->map(fn ($tag) => trim($tag))
+            ->filter(fn ($tag) => ! empty($tag))
             ->unique()
             ->toArray();
 
@@ -105,7 +109,7 @@ class Manage extends Component
         $this->editingProject = $project;
         $this->title = $project->title;
         $this->description = $project->description;
-        $this->existingImageUrl = $project->getFirstMediaUrl('images');
+        $this->existingImageUrl = $project->primary_image_url;
         $this->tags = $project->tags()->pluck('name')->implode(',');
 
         $this->showFormModal = true;
@@ -142,19 +146,21 @@ class Manage extends Component
 
     public function render()
     {
-        $projects = Auth::check() 
+        $projects = Auth::check()
         ? Auth::user()
-        ->projects()
-        ->when($this->search, function($query){
-            $query->where('title', 'x', "%{$this->search}%")
-            ->orWhereHas('tags', function($query){
-                $query->where('name->en', 'like', "%{$this->search}%");
-            });
-        })
-        ->latest()
-        ->get() 
+            ->projects()
+            ->when($this->search, function ($query) {
+                $query->where(function ($subQuery) {
+                    $subQuery->where('title', 'like', "%{$this->search}%")
+                        ->orWhereHas('tags', function ($tagQuery) {
+                            $tagQuery->where('name->en', 'like', "%{$this->search}%");
+                        });
+                });
+            })
+            ->latest()
+            ->get()
         : collect();
-        
+
         return view('livewire.projects.manage', compact('projects'));
     }
 }

@@ -122,8 +122,8 @@
                                 <div class="group relative bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 hover:shadow-md">
                                     <div class="flex items-start space-x-3">
                                         <div class="flex-shrink-0">
-                                    @if($project->getFirstMediaUrl('images'))
-                                                <img src="{{ $project->getFirstMediaUrl('images') }}" 
+                                    @if($project->primary_image_url)
+                                                <img src="{{ $project->primary_image_url }}" 
                                                      alt="{{ $project->title }}" 
                                                      class="w-12 h-12 rounded-lg object-cover">
                                     @else
@@ -219,8 +219,8 @@
 
                                                 <!-- Project Image -->
                                                 <div class="h-full relative overflow-hidden">
-                                                    @if($project->getFirstMediaUrl('images'))
-                                                        <img src="{{ $project->getFirstMediaUrl('images') }}" 
+                                                    @if($project->primary_image_url)
+                                                        <img src="{{ $project->primary_image_url }}" 
                                                              alt="{{ $project->title }}" 
                                                              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                 @else
@@ -354,9 +354,9 @@
                                 @endif
                                 
                                     <!-- Project Image -->
-                                @if($project->getFirstMediaUrl('images'))
+                                @if($project->primary_image_url)
                                         <div class="{{ $index % 3 === 0 ? 'h-64' : ($index % 2 === 0 ? 'h-48' : 'h-56') }} relative overflow-hidden">
-                                            <img src="{{ $project->getFirstMediaUrl('images') }}" 
+                                            <img src="{{ $project->primary_image_url }}" 
                                                  alt="{{ $project->title }}" 
                                                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

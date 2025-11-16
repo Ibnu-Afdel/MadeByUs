@@ -13,9 +13,10 @@ use Spatie\Tags\HasTags;
 class Project extends Model implements HasMedia
 {
     use HasFactory;
-    use InteractsWithMedia;
     use HasSlug;
     use HasTags;
+    use InteractsWithMedia;
+
     protected $guarded = [];
 
     protected $casts = [
@@ -32,7 +33,6 @@ class Project extends Model implements HasMedia
         return 'slug';
     }
 
-
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -41,5 +41,32 @@ class Project extends Model implements HasMedia
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function getPrimaryImageUrlAttribute(): ?string
+    {
+        $url = $this->getFirstMediaUrl('images');
+
+        if (! $url) {
+            return null;
+        }
+
+        $components = parse_url($url);
+
+        if ($components === false) {
+            return $url;
+        }
+
+        $path = $components['path'] ?? '';
+
+        if (! empty($components['query'])) {
+            $path .= '?'.$components['query'];
+        }
+
+        if (! empty($components['fragment'])) {
+            $path .= '#'.$components['fragment'];
+        }
+
+        return $path ?: $url;
     }
 }

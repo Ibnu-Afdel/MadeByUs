@@ -27,6 +27,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->profile()
+            ->brandName('MadeByUs')
             ->login()
             ->colors([
                 'primary' => Color::Amber,
